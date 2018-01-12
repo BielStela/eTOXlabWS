@@ -147,6 +147,10 @@ object Application extends Controller {
         Ok(views.html.home_page("", views.html.mol_info(dfm), views.html.results(res, modelId + " version " + iv, model_units), play.api.templates.Html(""))).withSession(("molecula", idMol))
       }
   }
+  
+  def filterMols={
+    
+  }
 
   def upload_Molecule = Action(parse.multipartFormData) { request =>
 
@@ -161,7 +165,10 @@ object Application extends Controller {
     val contentType = ufile2.contentType
 
     val tmpFile = FileUtils.getTmpFile(tmpDir, ".sdf")
+    //val filteredMolsFile=filterMols(tmpFile)
+    //filteredMolsFile.moveTo(new File(tmpFile), replace = true)
     ufile2.ref.moveTo(new File(tmpFile), replace = true)
+    
 
 //    val dfm = CompoundUtils.getMolsSVG(tmpFile)
     val dfm = CompoundUtils.getMolsIMG(tmpFile)

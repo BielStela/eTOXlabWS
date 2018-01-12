@@ -45,7 +45,6 @@ object eTOXlab {
 
   lazy val models = (for ((model, tag, iv, ev) <- read_models) yield ((tag + "#" + ev) -> (model, tag, iv, ev))).toMap
 
-
   lazy val modelsTag2ModelId = (for ((model, tag, iv, ev) <- read_models) yield (tag -> (model, tag, iv, ev))).toMap
 
   val read_models = {
@@ -136,10 +135,18 @@ object eTOXlab {
   def parseResults_table(lines: Iterator[String]) = {
 
     def truncateAt(n: Float, p: Int): Double = {
-      val s = math pow(10, p);
+      val s = math pow (10, p);
       (math floor n * s) / s
     }
 
+    def safeConversionFloat(s: String) = {
+      try {
+        truncateAt(s.toFloat, 2).toString()
+      } catch {
+        case e: Exception => ""
+      }     
+    }
+    
     println("Parsing Table")
     val itype = "quantitative"
     var i = 1
@@ -165,9 +172,9 @@ object eTOXlab {
           val RI_value = if (fields(4) == "1") fields(5) else "None"
           val resMap = Map(
             "cmpd_id" -> i.toString,
-            "pred_value" -> truncateAt(pred_value.toFloat, 2).toString(),
+            "pred_value" -> safeConversionFloat(pred_value),
             "AD_value" -> AD_value,
-            "RI_value" -> truncateAt(RI_value.toFloat, 2).toString())
+            "RI_value" -> safeConversionFloat(RI_value))
           println(resMap)
           resMap
 

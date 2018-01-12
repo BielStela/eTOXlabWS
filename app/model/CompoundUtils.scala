@@ -75,7 +75,6 @@ object CompoundUtils {
         ""
       else
         getIMGBase64_FromSMiles_RDKit(getSMILESfromMol(p._2))
-      println("img: " + img)
       (p._1, img)
     })
     val l2 = l.filter(_._2 != "")
@@ -114,7 +113,7 @@ object CompoundUtils {
     val imageBytes = bos.toByteArray()
     val encoder = new BASE64Encoder()
     val imageString = encoder.encode(imageBytes)
-    println("R: " + imageString)
+    //println("R: " + imageString)
     imageString.toUpperCase()
     imageString
   }
